@@ -2,6 +2,7 @@ const numBtns = document.querySelectorAll('.number');
 const operatorBtns = document.querySelectorAll('.operator');
 const display = document.getElementById('display');
 const decimal = document.getElementById('decimal');
+let clearDisplay = false;
 
 function add(a, b) {
   return a + b;
@@ -33,24 +34,37 @@ function operate(operator, a, b) {
       return multiply(a, b);
       break;
 
-    case '/':
+    case '÷':
       return divide(a, b);
       break;
   }
 }
 
+let num1 = '';
+let operator = '';
+let num2 = '';
+
 numBtns.forEach(num => {
-  num.addEventListener('click', () => {
-    if (display.textContent.includes('+' || '-' || 'x' || '÷')) {
+  num.addEventListener('click', (e) => {
+    if (clearDisplay) {
       display.textContent = '';
-    };
+      clearDisplay = false;
+    }
     display.textContent += num.textContent;
+    if (operator) {
+      num2 += e.target.textContent;
+      display.textContent = num2;
+    } else {
+      num1 += e.target.textContent;
+    };
   });
 });
 
-operatorBtns.forEach(operator => {
-  operator.addEventListener('click', () => {
-    display.textContent = operator.textContent;
+operatorBtns.forEach(sign => {
+  sign.addEventListener('click', (e) => {
+    display.textContent = e.target.textContent;
+    operator = e.target.textContent;
+    clearDisplay = true;
   })
 })
 
