@@ -3,8 +3,7 @@ const operatorBtns = document.querySelectorAll('.operator');
 const display = document.getElementById('display');
 const decimal = document.getElementById('decimal');
 const equals = document.getElementById('equals');
-let clearDisplay = false;
-let equalsClicked = false;
+let clearDisplay = true;
 
 function add(a, b) {
   return a + b;
@@ -42,9 +41,9 @@ function operate(operator, a, b) {
   }
 }
 
-let num1 = '';
+let num1 = 0;
 let operator = '';
-let num2 = '';
+let num2 = 0;
 
 numBtns.forEach(num => {
   num.addEventListener('click', (e) => {
@@ -52,15 +51,13 @@ numBtns.forEach(num => {
       display.textContent = '';
       clearDisplay = false;
     }
-    if (equalsClicked) {
-      num1 = '';
-      equalsClicked = false;
-    }
     display.textContent += num.textContent;
     if (operator) {
+      num2 = '';
       num2 += e.target.textContent;
       display.textContent = num2;
     } else {
+      num1 = '';
       num1 += e.target.textContent;
     };
   });
@@ -76,10 +73,6 @@ function getAnswer() {
   clearDisplay = true;
 }
 
-
-//if we're "full", i.e. num2 is not empty, use the operator sign as an
-//equals, and update num1 as answer, operator as whatever was clicked,
-//and set equalsClicked to true.
 operatorBtns.forEach(sign => {
   sign.addEventListener('click', (e) => {
     display.textContent = e.target.textContent;
@@ -91,6 +84,9 @@ operatorBtns.forEach(sign => {
   })
 })
 
+
+//if everything's normal, run getAnswer as normal. If nothing is there
+//(even num1 is missing,)
 equals.addEventListener('click', () => {
   getAnswer();
 })
