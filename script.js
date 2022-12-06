@@ -41,9 +41,9 @@ function operate(operator, a, b) {
   }
 }
 
-let num1 = 0;
+let num1 = '';
 let operator = '';
-let num2 = 0;
+let num2 = '';
 
 numBtns.forEach(num => {
   num.addEventListener('click', (e) => {
@@ -53,11 +53,9 @@ numBtns.forEach(num => {
     }
     display.textContent += num.textContent;
     if (operator) {
-      num2 = '';
       num2 += e.target.textContent;
       display.textContent = num2;
     } else {
-      num1 = '';
       num1 += e.target.textContent;
     };
   });
@@ -84,9 +82,19 @@ operatorBtns.forEach(sign => {
   })
 })
 
-
-//if everything's normal, run getAnswer as normal. If nothing is there
-//(even num1 is missing,)
 equals.addEventListener('click', () => {
-  getAnswer();
+  if (!num1) {
+    let answer = 0;
+    display.textContent = answer;
+    clearDisplay = true;
+  } else if (!operator) {
+    answer = num1;
+    display.textContent = answer;
+    clearDisplay = true;
+  } else if (!num2) {
+    num2 = num1;
+    getAnswer();
+  } else {
+    getAnswer();
+  }
 })
