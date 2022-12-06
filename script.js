@@ -67,7 +67,7 @@ numBtns.forEach(num => {
 });
 
 function getAnswer() {
-  let answer = operate(operator, +num1, +num2);
+  let answer = Math.round(operate(operator, +num1, +num2) * 10000) / 10000;
   console.log(answer);
   display.textContent = answer;
   num1 = answer;
