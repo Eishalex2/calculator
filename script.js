@@ -64,12 +64,20 @@ numBtns.forEach(num => {
 });
 
 function getAnswer() {
-  let answer = Math.round(operate(operator, +num1, +num2) * 10000) / 10000;
-  display.textContent = answer;
-  num1 = answer;
-  operator = '';
-  num2 = '';
-  clearDisplay = true;
+  if (operator === '÷' && +num2 === 0) {
+    display.textContent = "Not today, sucker!";
+    num1 = '';
+    operator = '';
+    num2 = '';
+    clearDisplay = true;
+  } else {
+    let answer = Math.round(operate(operator, +num1, +num2) * 10000) / 10000;
+    display.textContent = answer;
+    num1 = answer;
+    operator = '';
+    num2 = '';
+    clearDisplay = true;
+  }
 }
 
 operatorBtns.forEach(sign => {
@@ -81,30 +89,12 @@ operatorBtns.forEach(sign => {
     }
     operator = e.target.textContent;
   })
-})
-
-// equals.addEventListener('click', () => {
-//   if (!num1) {
-//     num1 = 0;
-//     answer = num1;
-//     display.textContent = answer;
-//     clearDisplay = true;
-//   } else if (!operator) {
-//     answer = num1;
-//     display.textContent = answer;
-//     clearDisplay = true;
-//   } else if (!num2) {
-//     num2 = num1;
-//     getAnswer();
-//   } else {
-//     getAnswer();
-//   }
-// })
+});
 
 equals.addEventListener('click', () => {
   if (!num1 && !operator && !num2) {
     num1 = 0;
-    answer = num1;
+    let answer = num1;
     display.textContent = answer;
     clearDisplay = true;
   } else if (!num1 && !num2) {
@@ -126,9 +116,13 @@ equals.addEventListener('click', () => {
   }
 })
 
-clear.addEventListener('click', () => {
+function clearCalc() {
   display.textContent = 0;
   num1 = '';
   operator = '';
   num2 = '';
+}
+
+clear.addEventListener('click', () => {
+  clearCalc();
 })
