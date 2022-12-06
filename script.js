@@ -3,6 +3,8 @@ const operatorBtns = document.querySelectorAll('.operator');
 const display = document.getElementById('display');
 const decimal = document.getElementById('decimal');
 const equals = document.getElementById('equals');
+const clear = document.getElementById('clear');
+
 let clearDisplay = true;
 
 function add(a, b) {
@@ -63,7 +65,6 @@ numBtns.forEach(num => {
 
 function getAnswer() {
   let answer = Math.round(operate(operator, +num1, +num2) * 10000) / 10000;
-  console.log(answer);
   display.textContent = answer;
   num1 = answer;
   operator = '';
@@ -82,19 +83,52 @@ operatorBtns.forEach(sign => {
   })
 })
 
+// equals.addEventListener('click', () => {
+//   if (!num1) {
+//     num1 = 0;
+//     answer = num1;
+//     display.textContent = answer;
+//     clearDisplay = true;
+//   } else if (!operator) {
+//     answer = num1;
+//     display.textContent = answer;
+//     clearDisplay = true;
+//   } else if (!num2) {
+//     num2 = num1;
+//     getAnswer();
+//   } else {
+//     getAnswer();
+//   }
+// })
+
 equals.addEventListener('click', () => {
-  if (!num1) {
-    let answer = 0;
-    display.textContent = answer;
-    clearDisplay = true;
-  } else if (!operator) {
+  if (!num1 && !operator && !num2) {
+    num1 = 0;
     answer = num1;
     display.textContent = answer;
     clearDisplay = true;
+  } else if (!num1 && !num2) {
+    num1 = 0;
+    num2 = num1;
+    getAnswer();
+  } else if (!operator && !num2) {
+    answer = num1;
+    display.textContent = answer;
+    clearDisplay = true;
+  } else if (!num1) {
+    num1 = 0;
+    getAnswer();
   } else if (!num2) {
     num2 = num1;
     getAnswer();
   } else {
     getAnswer();
   }
+})
+
+clear.addEventListener('click', () => {
+  display.textContent = 0;
+  num1 = '';
+  operator = '';
+  num2 = '';
 })
