@@ -2,6 +2,8 @@ const numBtns = document.querySelectorAll('.number');
 const operatorBtns = document.querySelectorAll('.operator');
 const display = document.getElementById('display');
 const decimal = document.getElementById('decimal');
+const equals = document.getElementById('equals');
+let clearDisplay = true;
 
 function add(a, b) {
   return a + b;
@@ -29,36 +31,62 @@ function operate(operator, a, b) {
       return subtract(a, b);
       break;
 
-    case '*':
+    case 'x':
       return multiply(a, b);
       break;
 
-    case '/':
+    case '÷':
       return divide(a, b);
       break;
   }
 }
 
+let num1 = 0;
+let operator = '';
+let num2 = 0;
+
 numBtns.forEach(num => {
-  num.addEventListener('click', () => {
-    //clear textContent after an operator button has been pressed so
-    //that operators show up alone.
-    if (display.textContent.includes('+' || '-' || 'x' || '÷')) {
+  num.addEventListener('click', (e) => {
+    if (clearDisplay) {
       display.textContent = '';
-    };
+      clearDisplay = false;
+    }
     display.textContent += num.textContent;
+    if (operator) {
+      num2 = '';
+      num2 += e.target.textContent;
+      display.textContent = num2;
+    } else {
+      num1 = '';
+      num1 += e.target.textContent;
+    };
   });
 });
 
-operatorBtns.forEach(operator => {
-  operator.addEventListener('click', () => {
-    display.textContent = operator.textContent;
+function getAnswer() {
+  let answer = Math.round(operate(operator, +num1, +num2) * 10000) / 10000;
+  console.log(answer);
+  display.textContent = answer;
+  num1 = answer;
+  operator = '';
+  num2 = '';
+  clearDisplay = true;
+}
+
+operatorBtns.forEach(sign => {
+  sign.addEventListener('click', (e) => {
+    display.textContent = e.target.textContent;
+    clearDisplay = true;
+    if (num2) {
+      getAnswer();
+    }
+    operator = e.target.textContent;
   })
 })
 
-//store the first number that's input, the operator, and then the second
-//number that's input. Then, when you click the equals button, run the
-//operate function on the array and display the output.
-//only focusing on 1 set for now.
 
-
+//if everything's normal, run getAnswer as normal. If nothing is there
+//(even num1 is missing,)
+equals.addEventListener('click', () => {
+  getAnswer();
+})
