@@ -41,6 +41,8 @@ function operate(operator, a, b) {
 
 numBtns.forEach(num => {
   num.addEventListener('click', () => {
+    //clear textContent after an operator button has been pressed so
+    //that operators show up alone.
     if (display.textContent.includes('+' || '-' || 'x' || '÷')) {
       display.textContent = '';
     };
