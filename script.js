@@ -136,3 +136,8 @@ clear.addEventListener('click', () => {
   clearCalc();
 });
 
+//Experimental section
+
+//Plan: convert all the bits effected by keyboard input to functions
+//above, so that I don't have to type them in multiple times. Then set
+//up keyboard input.
