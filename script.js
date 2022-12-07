@@ -63,6 +63,10 @@ numBtns.forEach(num => {
   });
 });
 
+decimal.addEventListener('click', (e) => {
+  decimal.disabled = true;
+})
+
 function getAnswer() {
   if (operator === '÷' && +num2 === 0) {
     display.textContent = "Not today, sucker!";
@@ -88,6 +92,7 @@ operatorBtns.forEach(sign => {
       getAnswer();
     }
     operator = e.target.textContent;
+    decimal.disabled = false;
   })
 });
 
@@ -114,6 +119,7 @@ equals.addEventListener('click', () => {
   } else {
     getAnswer();
   }
+  decimal.disabled = false;
 })
 
 function clearCalc() {
@@ -121,6 +127,8 @@ function clearCalc() {
   num1 = '';
   operator = '';
   num2 = '';
+  decimal.disabled = false;
+  clearDisplay = true;
 }
 
 clear.addEventListener('click', () => {
