@@ -4,6 +4,7 @@ const display = document.getElementById('display');
 const decimal = document.getElementById('decimal');
 const equals = document.getElementById('equals');
 const clear = document.getElementById('clear');
+const back = document.getElementById('back');
 
 let clearDisplay = true;
 
@@ -63,7 +64,7 @@ numBtns.forEach(num => {
   });
 });
 
-decimal.addEventListener('click', (e) => {
+decimal.addEventListener('click', () => {
   decimal.disabled = true;
 })
 
@@ -133,4 +134,5 @@ function clearCalc() {
 
 clear.addEventListener('click', () => {
   clearCalc();
-})
+});
+

@@ -23,7 +23,7 @@ body {
   grid-template-rows: 60px 40px 30px 30px 30px 30px;
   grid-template-areas: 
     "display display display display"
-    "clear clear clear clear"
+    "clear clear backspace backspace"
     "seven eight nine divide"
     "four five six times"
     "one two three minus"
@@ -43,6 +43,10 @@ body {
 
 #clear {
   grid-area: clear;
+}
+
+#back {
+  grid-area: backspace;
 }
 
 #seven {
