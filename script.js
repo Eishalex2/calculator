@@ -56,25 +56,29 @@ function operate(operator, a, b) {
   }
 }
 
+function inputNum(number) {
+  if (clearDisplay) {
+    display.textContent = '';
+    clearDisplay = false;
+  }
+  if (operator) {
+    num2 += number;
+    display.textContent = num2;
+  } else {
+    num1 += number;
+    display.textContent = num1;
+  };
+}
+
 numBtns.forEach(num => {
   num.addEventListener('click', (e) => {
-    if (clearDisplay) {
-      display.textContent = '';
-      clearDisplay = false;
-    }
-    display.textContent += num.textContent;
-    if (operator) {
-      num2 += e.target.textContent;
-      display.textContent = num2;
-    } else {
-      num1 += e.target.textContent;
-    };
+    inputNum(e.target.textContent)
   });
 });
 
 decimal.addEventListener('click', () => {
   decimal.disabled = true;
-})
+});
 
 function getAnswer() {
   if (operator === '÷' && +num2 === 0) {
@@ -164,3 +168,26 @@ function deleteNum(num) {
   }
   return result;
 }
+
+//add a keydown event listener to the window. done
+//on a number keypress, run equivalent of what's going on under
+//numBtns.forEach. done
+//on an operator keypress, run the equivalent of what's going on under
+//operatorBtns.forEach.
+//on an equals or enter keypress, run the equivalent of the
+//equals.addeventlistener.
+//on a backspace keypress, run deleteNum.
+//on an escape or Delete key keypress, run clearCalc.
+
+window.addEventListener('keydown', (e) => {
+  console.log(e.key)
+  if (e.key >= 0 && e.key <= 9) {
+    inputNum(e.key);
+  } else if (e.key === '.') {
+      if (!display.textContent.includes('.')) {
+        inputNum(e.key);
+      } else {
+        display.textContent += '';
+      }
+  } //operator keypress
+})
