@@ -56,8 +56,6 @@ function operate(operator, a, b) {
   }
 }
 
-
-
 numBtns.forEach(num => {
   num.addEventListener('click', (e) => {
     if (clearDisplay) {
