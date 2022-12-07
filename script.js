@@ -6,8 +6,19 @@ const equals = document.getElementById('equals');
 const clear = document.getElementById('clear');
 const back = document.getElementById('back');
 
-let clearDisplay = true;
+//setup everything I might want to do in functions
+let clearDisplayFlag = false;
 
+function clearDisplay() {
+  display.textContent = '';
+  clearDisplayFlag = false;
+}
+
+let num1 = '';
+let operator = '';
+let num2 = '';
+
+//leaving the operation functions
 function add(a, b) {
   return a + b;
 }
@@ -24,6 +35,7 @@ function divide(a, b) {
   return a / b;
 }
 
+//leaving the operate function
 function operate(operator, a, b) {
   switch (operator) {
     case '+':
@@ -44,9 +56,7 @@ function operate(operator, a, b) {
   }
 }
 
-let num1 = '';
-let operator = '';
-let num2 = '';
+
 
 numBtns.forEach(num => {
   num.addEventListener('click', (e) => {
@@ -136,3 +146,23 @@ clear.addEventListener('click', () => {
   clearCalc();
 });
 
+back.addEventListener('click', () => {
+  if (display.textContent === num1) {
+    deleteNum(num1);
+  } else if (display.textContent === num2) {
+    deleteNum(num2);
+  }
+})
+
+function deleteNum(num) {
+  let result = num.slice(0, -1);
+  console.log(result);
+  display.textContent = result;
+  //how to tell if the display is currently on num1 or num2
+  if (!operator) {
+    num1 = result;
+  } else {
+    num2 = result;
+  }
+  return result;
+}
