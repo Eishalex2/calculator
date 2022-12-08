@@ -80,7 +80,7 @@ decimal.addEventListener('click', () => {
   decimal.disabled = true;
 });
 
-function getAnswer() {
+function calculate() {
   if (operator === '÷' && +num2 === 0) {
     display.textContent = "Not today, sucker!";
     num1 = '';
@@ -97,19 +97,23 @@ function getAnswer() {
   }
 }
 
+function inputOp(operation) {
+  display.textContent = operation;
+  clearDisplay = true;
+  if (num2) {
+    getAnswer();
+  }
+  operator = operation;
+  decimal.disabled = false;
+}
+
 operatorBtns.forEach(sign => {
   sign.addEventListener('click', (e) => {
-    display.textContent = e.target.textContent;
-    clearDisplay = true;
-    if (num2) {
-      getAnswer();
-    }
-    operator = e.target.textContent;
-    decimal.disabled = false;
-  })
+    inputOp(e.target.textContent);
+  });
 });
 
-equals.addEventListener('click', () => {
+function getAnswer() {
   if (!num1 && !operator && !num2) {
     num1 = 0;
     let answer = num1;
@@ -118,22 +122,24 @@ equals.addEventListener('click', () => {
   } else if (!num1 && !num2) {
     num1 = 0;
     num2 = num1;
-    getAnswer();
+    calculate();
   } else if (!operator && !num2) {
     answer = num1;
     display.textContent = answer;
     clearDisplay = true;
   } else if (!num1) {
     num1 = 0;
-    getAnswer();
+    calculate();
   } else if (!num2) {
     num2 = num1;
-    getAnswer();
+    calculate();
   } else {
-    getAnswer();
+    calculate();
   }
   decimal.disabled = false;
-})
+}
+
+equals.addEventListener('click', getAnswer);
 
 function clearCalc() {
   display.textContent = 0;
@@ -149,11 +155,7 @@ clear.addEventListener('click', () => {
 });
 
 back.addEventListener('click', () => {
-  if (display.textContent === num1) {
-    deleteNum(num1);
-  } else if (display.textContent === num2) {
-    deleteNum(num2);
-  }
+  deleteNum(display.textContent);
 })
 
 function deleteNum(num) {
@@ -169,15 +171,22 @@ function deleteNum(num) {
   return result;
 }
 
-//add a keydown event listener to the window. done
-//on a number keypress, run equivalent of what's going on under
-//numBtns.forEach. done
-//on an operator keypress, run the equivalent of what's going on under
-//operatorBtns.forEach.
-//on an equals or enter keypress, run the equivalent of the
-//equals.addeventlistener.
-//on a backspace keypress, run deleteNum.
-//on an escape or Delete key keypress, run clearCalc.
+function handleOp(sign) {
+  let result;
+  switch (sign) {
+    case '*':
+      result = 'x';
+      break;
+    
+    case '/':
+      result = '÷';
+      break;
+  
+    default:
+      result = sign;
+  }
+  return result;
+}
 
 window.addEventListener('keydown', (e) => {
   console.log(e.key)
@@ -189,5 +198,20 @@ window.addEventListener('keydown', (e) => {
       } else {
         display.textContent += '';
       }
-  } //operator keypress
-})
+  } else if (e.key === '+' || e.key === '-' || e.key === '/' || e.key === '*') {
+    let operation = handleOp(e.key);
+    inputOp(operation);
+  } else if (e.key === '=' || e.key === 'Enter') {
+    //prevents equals from registering a click on a button if user is
+    //between mouse and keyboard input.
+    e.preventDefault();
+    getAnswer();
+  } else if (e.key === 'Backspace') {
+    deleteNum(display.textContent);
+  } else if (e.key === 'Escape' || e.key === 'Delete') {
+    clearCalc();
+  }
+});
+
+//play around with changing the "click" events to mousedown events to
+//fix the focus issue.
