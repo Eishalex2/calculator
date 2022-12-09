@@ -6,8 +6,8 @@ const equals = document.getElementById('equals');
 const clear = document.getElementById('clear');
 const back = document.getElementById('back');
 
-//setup everything I might want to do in functions
 let clearDisplayFlag = false;
+let lastEqualsFlag = false;
 
 function clearDisplay() {
   display.textContent = '';
@@ -18,7 +18,6 @@ let num1 = '';
 let operator = '';
 let num2 = '';
 
-//leaving the operation functions
 function add(a, b) {
   return a + b;
 }
@@ -57,9 +56,11 @@ function operate(operator, a, b) {
 }
 
 function inputNum(number) {
-  if (clearDisplay) {
-    display.textContent = '';
-    clearDisplay = false;
+  if (clearDisplayFlag) {
+    clearDisplay();
+  };
+  if (lastEqualsFlag) {
+    num1 = '';
   }
   if (operator) {
     num2 += number;
@@ -73,11 +74,13 @@ function inputNum(number) {
 numBtns.forEach(num => {
   num.addEventListener('click', (e) => {
     inputNum(e.target.textContent)
+    lastEqualsFlag = false;
   });
 });
 
 decimal.addEventListener('click', () => {
   decimal.disabled = true;
+  lastEqualsFlag = false;
 });
 
 function calculate() {
@@ -86,20 +89,20 @@ function calculate() {
     num1 = '';
     operator = '';
     num2 = '';
-    clearDisplay = true;
+    clearDisplayFlag = true;
   } else {
     let answer = Math.round(operate(operator, +num1, +num2) * 10000) / 10000;
     display.textContent = answer;
     num1 = answer;
     operator = '';
     num2 = '';
-    clearDisplay = true;
+    clearDisplayFlag = true;
   }
 }
 
 function inputOp(operation) {
   display.textContent = operation;
-  clearDisplay = true;
+  clearDisplayFlag = true;
   if (num2) {
     getAnswer();
   }
@@ -110,6 +113,7 @@ function inputOp(operation) {
 operatorBtns.forEach(sign => {
   sign.addEventListener('click', (e) => {
     inputOp(e.target.textContent);
+    lastEqualsFlag = false;
   });
 });
 
@@ -118,15 +122,16 @@ function getAnswer() {
     num1 = 0;
     let answer = num1;
     display.textContent = answer;
-    clearDisplay = true;
+    clearDisplayFlag = true;
   } else if (!num1 && !num2) {
     num1 = 0;
     num2 = num1;
     calculate();
   } else if (!operator && !num2) {
     answer = num1;
+    console.log(answer);
     display.textContent = answer;
-    clearDisplay = true;
+    clearDisplayFlag = true;
   } else if (!num1) {
     num1 = 0;
     calculate();
@@ -139,7 +144,10 @@ function getAnswer() {
   decimal.disabled = false;
 }
 
-equals.addEventListener('click', getAnswer);
+equals.addEventListener('click', () => {
+  getAnswer();
+  lastEqualsFlag = true;
+});
 
 function clearCalc() {
   display.textContent = 0;
@@ -147,7 +155,8 @@ function clearCalc() {
   operator = '';
   num2 = '';
   decimal.disabled = false;
-  clearDisplay = true;
+  clearDisplayFlag = true;
+  lastEqualsFlag = false;
 }
 
 clear.addEventListener('click', () => {
@@ -192,26 +201,28 @@ window.addEventListener('keydown', (e) => {
   console.log(e.key)
   if (e.key >= 0 && e.key <= 9) {
     inputNum(e.key);
+    lastEqualsFlag = false;
   } else if (e.key === '.') {
       if (!display.textContent.includes('.')) {
         inputNum(e.key);
       } else {
         display.textContent += '';
       }
+      lastEqualsFlag = false;
   } else if (e.key === '+' || e.key === '-' || e.key === '/' || e.key === '*') {
     let operation = handleOp(e.key);
     inputOp(operation);
+    lastEqualsFlag = false;
   } else if (e.key === '=' || e.key === 'Enter') {
     //prevents equals from registering a click on a button if user is
     //between mouse and keyboard input.
-    e.preventDefault();
+    //e.preventDefault();
     getAnswer();
+    lastEqualsFlag = true;
   } else if (e.key === 'Backspace') {
     deleteNum(display.textContent);
   } else if (e.key === 'Escape' || e.key === 'Delete') {
     clearCalc();
+    lastEqualsFlag = false;
   }
 });
-
-//play around with changing the "click" events to mousedown events to
-//fix the focus issue.
