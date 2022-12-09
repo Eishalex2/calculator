@@ -1,3 +1,9 @@
+:root {
+  --num-button-hover: #ddd;
+  --op-button: #e3c2fc;
+  --op-button-hover: #cf99f7;
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -6,21 +12,22 @@
 
 body {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  height: 100vh;
+  align-items: center;
 }
 
 .container {
   display: flex;
-  width: 250px;
-  border: 1px solid black;
-  padding: 10px;
   justify-content: center;
+  align-items: flex-start;
+  flex: 1;
 }
 
 .calculator {
   display: grid;
-  grid-template-columns: 50px 50px 50px 50px;
-  grid-template-rows: 60px 40px 30px 30px 30px 30px;
+  grid-template-columns: 65px 65px 65px 65px;
+  grid-template-rows: 100px 60px 45px 45px 45px 45px;
   grid-template-areas: 
     "display display display display"
     "clear clear backspace backspace"
@@ -28,25 +35,72 @@ body {
     "four five six times"
     "one two three minus"
     "zero decimal equals plus";
-  gap: 10px;
+  gap: 15px;
+  border: 2px solid black;
+  border-radius: 15px;
+  padding: 20px;
+  background-color: #ccc;
+}
+
+.calculator button {
+  border-radius: 10px;
 }
 
 #display {
   grid-area: display;
-  border: 1px solid black;
+  border: 2px solid black;
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: flex-end;
-  padding: 8px;
-  font-size: 24px;
+  padding: 15px;
+  font-size: 36px;
+  margin-bottom: 5px;
+  border-radius: 10px;
+  background-color: var(--op-button);
+}
+
+.number {
+  font-weight: bold;
+  font-size: 16px;
+  background-color: #fbfbfb;
+}
+
+.number:hover {
+  background-color: var(--num-button-hover);
+}
+
+#equals,
+.operator {
+  background-color: var(--op-button);
+}
+
+#equals:hover,
+.operator:hover {
+  background-color: var(--op-button-hover);
+}
+
+#clear,
+#back {
+  font-weight: 600;
+  font-size: 20px;
 }
 
 #clear {
   grid-area: clear;
+  background-color: #f78888;
+}
+
+#clear:hover {
+  background-color: #f57171;
 }
 
 #back {
   grid-area: backspace;
+  background-color: skyblue;
+}
+
+#back:hover {
+  background-color: #70c0e0;
 }
 
 #seven {
@@ -111,4 +165,12 @@ body {
 
 #divide {
   grid-area: divide;
+}
+
+h1 {
+  padding: 20px;
+  height: 25%;
+  display: flex;
+  align-items: center;
+  font-size: 48px;
 }
